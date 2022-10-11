@@ -56,7 +56,7 @@ model VerificationToken {
 }
 
 model VerifiedEmails {
-    id    String @id @default(cuid())
+    id    Int    @default(autoincrement()) @id
     email String @unique
 }
 

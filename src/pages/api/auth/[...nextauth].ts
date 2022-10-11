@@ -7,7 +7,13 @@ import { env } from "../../../env/server.mjs";
 
 export const authOptions: NextAuthOptions = {
   callbacks: {
-    session({ session, user }) {
+    async signIn({user}){
+      const isValid = await prisma.verifiedEmails.findUnique({where: {email: user.email as string}})
+      if (!!isValid) return true
+
+      return false
+    },
+    async session({ session, user }) {
       if (session.user) {
         session.user.id = user.id;
       }
