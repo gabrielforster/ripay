@@ -1,14 +1,22 @@
+import { useState } from "react";
 import type { NextPage } from "next";
 import Head from "next/head";
 import { useSession, signIn, signOut } from "next-auth/react";
+import { PlusCircle } from "phosphor-react"
 
+import Dashboard from "../components/Dashboard";
+import TicketModal from "../components/TicketModal";
 
 const Home: NextPage = () => {
   // const hello = trpc.useQuery(["example.hello", { text: "from tRPC" }]);
 
   const { data: session } = useSession();
 
-  console.log(session);
+  const [modelState, setModalState] = useState<boolean>(false)
+
+  function handleChangeModal(){
+    setModalState(!modelState)
+  }
 
   if (session) {
     return (
@@ -19,23 +27,38 @@ const Home: NextPage = () => {
         <header className="flex justify-between p-2">
           <h3>Ripay</h3>
 
-          <div className="flex">
-            <img
-              className="rounded-full h-10 w-10 mr-2"
-              src={session.user?.image ? session.user.image : ""} 
-            />
-            
-            <button 
-              onClick={() => signOut()}
-              className="text-gray-500 hover:text-gray-700 underline"
-            >
-              Sair!
-            </button>
-          </div>
+          <nav className="flex">
+            <div className="flex items-center">
+              <button
+              className="mr-2" 
+                onClick={() => handleChangeModal()}
+              >
+                <PlusCircle size={24} color="white" />
+              </button>
+            </div>
+
+            <div className="flex">
+              <img
+                src={session.user?.image as string}
+                className="mr-2 h-10 w-10 rounded-full"
+              />
+
+              <button
+                onClick={() => signOut()}
+                className="text-gray-500 underline hover:text-gray-700"
+              >
+                Sair!
+              </button>
+            </div>
+          </nav>
         </header>
 
         <main className="grid place-items-center">
-          <h2>Listagem das Rifas!</h2>          
+          <h2>Listagem das Rifas!</h2>
+          
+          <TicketModal isOpen={modelState} closeModal={handleChangeModal} />
+
+          <Dashboard />
         </main>
       </>
     );
