@@ -10,6 +10,7 @@ import {
 import { KIND } from "baseui/button"
 import { FormControl } from "baseui/form-control"
 import { Input } from "baseui/input"
+import { PhoneInput, COUNTRIES, SIZE as PHONESIZE } from "baseui/phone-input"
 import { useState } from "react"
 
 interface TicketModalProps{
@@ -25,7 +26,7 @@ export default function TicketModal(props: TicketModalProps) {
   const [amount, setAmount] = useState<number>()
 
   async function handleSubmit(){
-    console.log('foi')
+    // console.log('name', name, 'cpf', cpf, 'phone', phone, 'amount', amount)
 
     props.closeModal()
   }
@@ -62,13 +63,16 @@ export default function TicketModal(props: TicketModalProps) {
               onChange={({target}) => setCpf(target.value)}
               placeholder="000.000.000-00"
               data-mask="000.000.000-00"
+              pattern="\d{3}\.?\d{3}\.?\d{3}-?\d{2}"
             />
           </FormControl>
 
           <FormControl label="Telefone">
-            <Input
-              value={phone}
-              onChange={({target}) => setPhone(target.value)}
+            <PhoneInput
+              text={phone}
+              onTextChange={({target}) => setPhone(target.value)}
+              country={COUNTRIES.BR}
+              size={PHONESIZE.mini}
               placeholder="(00) 00000-0000"
             />
           </FormControl>
@@ -93,7 +97,7 @@ export default function TicketModal(props: TicketModalProps) {
           </ModalButton>
           
           <ModalButton
-            onClick={() => handleSubmit}
+            onClick={() => handleSubmit()}
           >
             Registrar
           </ModalButton>
