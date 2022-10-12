@@ -28,7 +28,30 @@ export default function TicketModal(props: TicketModalProps) {
   async function handleSubmit(){
     // console.log('name', name, 'cpf', cpf, 'phone', phone, 'amount', amount)
 
+    closeModal()
+  }
+
+  function closeModal(){
+    setName("")
+    setCpf("")
+    setPhone("")
+    setAmount(0)
+
     props.closeModal()
+  }
+
+  function hasErrorOnCPF(){
+    if(!!cpf?.length && cpf?.length !== 11){
+      return true
+    }
+    return false
+  }
+
+  function hasErrorOnPhone(){
+    if(!!cpf?.length && phone?.length !== 11 ){
+      return true
+    }
+    return false
   }
 
   if (!props.isOpen) return <></>
@@ -60,16 +83,18 @@ export default function TicketModal(props: TicketModalProps) {
           <FormControl label="CPF">
             <Input
               value={cpf}
+              error={hasErrorOnCPF()}
+              positive={!hasErrorOnCPF() && !!cpf?.length}
               onChange={({target}) => setCpf(target.value)}
               placeholder="000.000.000-00"
-              data-mask="000.000.000-00"
-              pattern="\d{3}\.?\d{3}\.?\d{3}-?\d{2}"
             />
           </FormControl>
 
           <FormControl label="Telefone">
             <PhoneInput
               text={phone}
+              error={hasErrorOnPhone()}
+              positive={!hasErrorOnPhone() && !!phone?.length}
               onTextChange={({target}) => setPhone(target.value)}
               country={COUNTRIES.BR}
               size={PHONESIZE.mini}
@@ -90,7 +115,7 @@ export default function TicketModal(props: TicketModalProps) {
 
         <ModalFooter>
           <ModalButton 
-            onClick={props.closeModal}
+            onClick={closeModal}
             kind={KIND.tertiary}
           >
             Cancelar
