@@ -33,7 +33,7 @@ const Home: NextPage = () => {
               className="mr-2" 
                 onClick={() => handleChangeModal()}
               >
-                <PlusCircle size={24} color="white" />
+                <PlusCircle size={32} color="white" />
               </button>
             </div>
 

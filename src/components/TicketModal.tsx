@@ -1,3 +1,16 @@
+import {
+  Modal,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  ModalButton,
+  SIZE,
+  ROLE
+} from "baseui/modal"
+import { FormControl } from "baseui/form-control"
+import { Input } from "baseui/input"
+import { useState } from "react"
+
 interface TicketModalProps{
   isOpen: boolean
   closeModal: () => void
@@ -5,67 +18,64 @@ interface TicketModalProps{
 
 export default function TicketModal(props: TicketModalProps) {
   
+  const [name, setName] = useState<string>()
+  const [cpf, setCpf] = useState<string>()
+  const [phone, setPhone] = useState<string>()
+  const [amount, setAmount] = useState<number>()
+
   if (!props.isOpen) return <></>
 
   return (
     <>
-      <div className="fixed z-10 inset-0 overflow-y-auto">
-        <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-          <div
-            className="fixed inset-0 transition-opacity"
-            aria-hidden="true"
-          >
-            <div className="absolute inset-0 bg-gray-500 opacity-75"></div>
-          </div>
+      <Modal
+        isOpen={props.isOpen}
+        onClose={props.closeModal}
+        closeable
+        animate
+        autoFocus
+        size={SIZE.default}
+        role={ROLE.dialog}
+      >
+        <ModalHeader>
+          Registrar nova venda!
+        </ModalHeader>
 
-          <span
-            className="hidden sm:inline-block sm:align-middle sm:h-screen"
-            aria-hidden="true"
-          >
-            &#8203;
-          </span>
+        <ModalBody>
+          <FormControl label="Nome do comprador">
+            <Input
+              value={name}
+              onChange={({target}) => setName(target.value)}
+              placeholder="Fulano de Tal"
+            />
+          </FormControl>
 
-          <div
-            className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full"
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="modal-headline"
-          >
-            <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-              <div className="sm:flex sm:items-start">
-                <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
-                  <h3
-                    className="text-lg leading-6 font-medium text-gray-900"
-                    id="modal-headline"
-                  >
-                    Modal Title
-                  </h3>
-                  <div className="mt-2">
-                    <p className="text-sm text-gray-500">
-                      Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-              <button
-                type="button"
-                className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-zinc-700 text-base font-medium text-white hover:bg-zinc-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500 sm:ml-3 sm:w-auto sm:text-sm"
-              >
-                Save
-              </button>
-              <button
-                onClick={props.closeModal}
-                type="button"
-                className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
-              >
-                Cancel
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
+          <FormControl label="CPF">
+            <Input
+              value={cpf}
+              onChange={({target}) => setCpf(target.value)}
+              placeholder="000.000.000-00"
+            />
+          </FormControl>
+
+          <FormControl label="Telefone">
+            <Input
+              value={phone}
+              onChange={({target}) => setPhone(target.value)}
+              placeholder="(00) 00000-0000"
+            />
+          </FormControl>
+
+          <FormControl label="Quantidade">
+            <Input
+              value={amount}
+              onChange={({target}) => setAmount(Number(target.value))}
+              placeholder="1"
+              type="number"
+            />
+          </FormControl>
+
+        </ModalBody>
+      </Modal>
     </>
   )
 }
