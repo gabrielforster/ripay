@@ -7,6 +7,7 @@ import {
   SIZE,
   ROLE
 } from "baseui/modal"
+import { KIND } from "baseui/button"
 import { FormControl } from "baseui/form-control"
 import { Input } from "baseui/input"
 import { useState } from "react"
@@ -23,6 +24,12 @@ export default function TicketModal(props: TicketModalProps) {
   const [phone, setPhone] = useState<string>()
   const [amount, setAmount] = useState<number>()
 
+  async function handleSubmit(){
+    console.log('foi')
+
+    props.closeModal()
+  }
+
   if (!props.isOpen) return <></>
 
   return (
@@ -33,7 +40,7 @@ export default function TicketModal(props: TicketModalProps) {
         closeable
         animate
         autoFocus
-        size={SIZE.default}
+        size={SIZE.auto}
         role={ROLE.dialog}
       >
         <ModalHeader>
@@ -54,6 +61,7 @@ export default function TicketModal(props: TicketModalProps) {
               value={cpf}
               onChange={({target}) => setCpf(target.value)}
               placeholder="000.000.000-00"
+              data-mask="000.000.000-00"
             />
           </FormControl>
 
@@ -75,6 +83,21 @@ export default function TicketModal(props: TicketModalProps) {
           </FormControl>
 
         </ModalBody>
+
+        <ModalFooter>
+          <ModalButton 
+            onClick={props.closeModal}
+            kind={KIND.tertiary}
+          >
+            Cancelar
+          </ModalButton>
+          
+          <ModalButton
+            onClick={() => handleSubmit}
+          >
+            Registrar
+          </ModalButton>
+        </ModalFooter>
       </Modal>
     </>
   )
