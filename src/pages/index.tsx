@@ -7,10 +7,6 @@ import { PlusCircle } from "phosphor-react";
 import Dashboard from "../components/Dashboard";
 import TicketModal from "../components/TicketModal";
 
-import { Client as Styletron } from "styletron-engine-atomic";
-import { Provider as StyletronProvider } from "styletron-react";
-import { DarkTheme, BaseProvider } from "baseui";
-
 const Home: NextPage = () => {
   // const hello = trpc.useQuery(["example.hello", { text: "from tRPC" }]);
 
@@ -24,48 +20,44 @@ const Home: NextPage = () => {
 
   if (session) {
     return (
-      <StyletronProvider value={new Styletron()}>
-        <BaseProvider theme={DarkTheme}>
-          <>
-            <Head>
-              <title>Ripay</title>
-            </Head>
-            <header className="flex justify-between p-2">
-              <h3>Ripay</h3>
+      <>
+        <Head>
+          <title>Ripay</title>
+        </Head>
+        <header className="flex justify-between p-2">
+          <h3>Ripay</h3>
 
-              <nav className="flex">
-                <div className="flex items-center">
-                  <button className="mr-2" onClick={() => handleChangeModal()}>
-                    <PlusCircle size={32} color="white" />
-                  </button>
-                </div>
+          <nav className="flex">
+            <div className="flex items-center">
+              <button className="mr-2" onClick={() => handleChangeModal()}>
+                <PlusCircle size={32} color="white" />
+              </button>
+            </div>
 
-                <div className="flex">
-                  <img
-                    src={session.user?.image as string}
-                    className="mr-2 h-10 w-10 rounded-full"
-                  />
+            <div className="flex">
+              <img
+                src={session.user?.image as string}
+                className="mr-2 h-10 w-10 rounded-full"
+              />
 
-                  <button
-                    onClick={() => signOut()}
-                    className="text-gray-500 underline hover:text-gray-700"
-                  >
-                    Sair!
-                  </button>
-                </div>
-              </nav>
-            </header>
+              <button
+                onClick={() => signOut()}
+                className="text-gray-500 underline hover:text-gray-700"
+              >
+                Sair!
+              </button>
+            </div>
+          </nav>
+        </header>
 
-            <main className="grid place-items-center">
-              <h2>Listagem das Rifas!</h2>
+        <main className="grid place-items-center">
+          <h2>Listagem das Rifas!</h2>
 
-              <TicketModal isOpen={modelState} closeModal={handleChangeModal} />
+          <TicketModal isOpen={modelState} closeModal={handleChangeModal} />
 
-              <Dashboard />
-            </main>
-          </>
-        </BaseProvider>
-      </StyletronProvider>
+          <Dashboard />
+        </main>
+      </>
     );
   }
   return (

@@ -9,13 +9,22 @@ import type { AppRouter } from "../server/router";
 import type { Session } from "next-auth";
 import "../styles/globals.css";
 
+import {Provider as StyletronProvider} from 'styletron-react';
+import {DarkTheme, BaseProvider} from 'baseui';
+import {styletron} from '../utils/styleron';
+
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
   pageProps: { session, ...pageProps },
 }) => {
   return (
+    
     <SessionProvider session={session}>
-        <Component {...pageProps} />
+      <StyletronProvider value={styletron}>
+        <BaseProvider theme={DarkTheme}>
+          <Component {...pageProps} />
+        </BaseProvider>
+      </StyletronProvider>
     </SessionProvider>
   );
 };
