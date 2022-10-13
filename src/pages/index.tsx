@@ -50,7 +50,7 @@ const Home: NextPage = () => {
           </nav>
         </header>
 
-        <main className="grid place-items-center">
+        <main className="grid place-items-center w-full">
           <h2>Listagem das Rifas!</h2>
 
           <TicketModal isOpen={modelState} closeModal={handleChangeModal} />

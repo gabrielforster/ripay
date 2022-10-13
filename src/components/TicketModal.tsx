@@ -5,44 +5,43 @@ import {
   ModalFooter,
   ModalButton,
   SIZE,
-  ROLE
-} from "baseui/modal"
-import { KIND } from "baseui/button"
+  ROLE,
+} from "baseui/modal";
+import { KIND } from "baseui/button";
 
-import { FormControl } from "baseui/form-control"
-import { Input } from "baseui/input"
-import { PhoneInput, COUNTRIES, SIZE as PHONESIZE } from "baseui/phone-input"
-import { Select, Value } from "baseui/select"
-import { Checkbox, LABEL_PLACEMENT } from "baseui/checkbox"
+import { FormControl } from "baseui/form-control";
+import { Input } from "baseui/input";
+import { PhoneInput, COUNTRIES, SIZE as PHONESIZE } from "baseui/phone-input";
+import { Select, Value } from "baseui/select";
+import { Checkbox, LABEL_PLACEMENT } from "baseui/checkbox";
 
-import { useState } from "react"
+import { useState } from "react";
 
-import { trpc } from "../utils/trpc"
+import { trpc } from "../utils/trpc";
 
-interface TicketModalProps{
-  isOpen: boolean
-  closeModal: () => void
+interface TicketModalProps {
+  isOpen: boolean;
+  closeModal: () => void;
 }
 
 export default function TicketModal(props: TicketModalProps) {
-  
-  const [name, setName] = useState<string>("")
-  const [cpf, setCpf] = useState<string>("")
-  const [phone, setPhone] = useState<string>("")
-  const [amount, setAmount] = useState<number>(0)
-  const [paymentMethod, setPaymentMethod] = useState<Value>()
-  const [payed, setPayed] = useState<boolean>(false)
-  const [registered, setRegistered] = useState<boolean>(false)
+  const [name, setName] = useState<string>("");
+  const [cpf, setCpf] = useState<string>("");
+  const [phone, setPhone] = useState<string>("");
+  const [amount, setAmount] = useState<number>(0);
+  const [paymentMethod, setPaymentMethod] = useState<Value>();
+  const [payed, setPayed] = useState<boolean>(false);
+  const [registered, setRegistered] = useState<boolean>(false);
 
   const paymentOptions = [
     { label: "Gabriel", id: "gabriel" },
     { label: "Mãe", id: "mae" },
-    { label: "Pai", id: "pai" }
-  ]
+    { label: "Pai", id: "pai" },
+  ];
 
-  const ticketsMutation = trpc.useMutation("tickets.create-ticket")
+  const ticketsMutation = trpc.useMutation("tickets.create-ticket");
 
-  async function createTicket(){
+  async function createTicket() {
     const createdTicket = await ticketsMutation.mutateAsync({
       name,
       cpf,
@@ -50,52 +49,52 @@ export default function TicketModal(props: TicketModalProps) {
       amount,
       payment: getFormatedPayment() as string,
       payed,
-      registered
-    })
+      registered,
+    });
 
-    return createdTicket
+    return createdTicket;
   }
 
-  function getFormatedPayment(){
-    if(paymentMethod){
-      return paymentMethod.map((option) => option.id).toString()
+  function getFormatedPayment() {
+    if (paymentMethod) {
+      return paymentMethod.map((option) => option.id).toString();
     }
   }
 
-  async function handleSubmit(){
+  async function handleSubmit() {
     try {
-      await createTicket()
+      await createTicket();
     } catch (error) {
-      console.error("Error on create ticket", error)
+      console.error("Error on create ticket", error);
     }
 
-    closeModal()
+    closeModal();
   }
 
-  function closeModal(){
-    setName("")
-    setCpf("")
-    setPhone("")
-    setAmount(0)
+  function closeModal() {
+    setName("");
+    setCpf("");
+    setPhone("");
+    setAmount(0);
 
-    props.closeModal()
+    props.closeModal();
   }
 
-  function hasErrorOnCPF(){
-    if(!!cpf?.length && cpf?.length !== 11){
-      return true
+  function hasErrorOnCPF() {
+    if (!!cpf?.length && cpf?.length !== 11) {
+      return true;
     }
-    return false
+    return false;
   }
 
-  function hasErrorOnPhone(){
-    if(!!cpf?.length && phone?.length !== 11 ){
-      return true
+  function hasErrorOnPhone() {
+    if (!!cpf?.length && phone?.length !== 11) {
+      return true;
     }
-    return false
+    return false;
   }
 
-  if (!props.isOpen) return <></>
+  if (!props.isOpen) return <></>;
 
   return (
     <>
@@ -108,15 +107,13 @@ export default function TicketModal(props: TicketModalProps) {
         size={SIZE.auto}
         role={ROLE.dialog}
       >
-        <ModalHeader>
-          Registrar nova venda!
-        </ModalHeader>
+        <ModalHeader>Registrar nova venda!</ModalHeader>
 
         <ModalBody>
           <FormControl label="Nome do comprador">
             <Input
               value={name}
-              onChange={({target}) => setName(target.value)}
+              onChange={({ target }) => setName(target.value)}
               placeholder="Fulano de Tal"
             />
           </FormControl>
@@ -126,7 +123,7 @@ export default function TicketModal(props: TicketModalProps) {
               value={cpf}
               error={hasErrorOnCPF()}
               positive={!hasErrorOnCPF() && !!cpf?.length}
-              onChange={({target}) => setCpf(target.value)}
+              onChange={({ target }) => setCpf(target.value)}
               placeholder="000.000.000-00"
             />
           </FormControl>
@@ -136,7 +133,7 @@ export default function TicketModal(props: TicketModalProps) {
               text={phone}
               error={hasErrorOnPhone()}
               positive={!hasErrorOnPhone() && !!phone?.length}
-              onTextChange={({target}) => setPhone(target.value)}
+              onTextChange={({ target }) => setPhone(target.value)}
               country={COUNTRIES.BR}
               size={PHONESIZE.mini}
               placeholder="(00) 00000-0000"
@@ -146,53 +143,52 @@ export default function TicketModal(props: TicketModalProps) {
           <FormControl label="Quantidade">
             <Input
               value={amount}
-              onChange={({target}) => setAmount(Number(target.value))}
+              onChange={({ target }) => setAmount(Number(target.value))}
               placeholder="1"
               type="number"
             />
           </FormControl>
 
-          <Select
-            options={paymentOptions}
-            value={paymentMethod}
-            onChange={({value}) => setPaymentMethod(value)}
-            labelKey="label"
-            valueKey="id"
-            placeholder="Selecione a forma de pagamento"
-          />
+          <FormControl label="Forma de pagamento">
+            <Select
+              options={paymentOptions}
+              value={paymentMethod}
+              onChange={({ value }) => setPaymentMethod(value)}
+              labelKey="label"
+              valueKey="id"
+              placeholder="Selecione a forma de pagamento"
+            />
+          </FormControl>
 
-          <Checkbox
-            checked={payed}
-            onChange={() => setPayed(!payed)}
-            labelPlacement={LABEL_PLACEMENT.right}
-          >
-            Pagamento realizado?
-          </Checkbox>
+          <FormControl label="Mais informações">
+            <>
+              <Checkbox
+                checked={payed}
+                onChange={() => setPayed(!payed)}
+                labelPlacement={LABEL_PLACEMENT.right}
+              >
+                Pagamento realizado?
+              </Checkbox>
 
-          <Checkbox
-            checked={registered}
-            onChange={() => setRegistered(!registered)}
-            labelPlacement={LABEL_PLACEMENT.right}
-          >
-            Rifa registrada?
-          </Checkbox>
+              <Checkbox
+                checked={registered}
+                onChange={() => setRegistered(!registered)}
+                labelPlacement={LABEL_PLACEMENT.right}
+              >
+                Rifa registrada?
+              </Checkbox>
+            </>
+          </FormControl>
         </ModalBody>
 
         <ModalFooter>
-          <ModalButton 
-            onClick={closeModal}
-            kind={KIND.tertiary}
-          >
+          <ModalButton onClick={closeModal} kind={KIND.tertiary}>
             Cancelar
           </ModalButton>
-          
-          <ModalButton
-            onClick={() => handleSubmit()}
-          >
-            Registrar
-          </ModalButton>
+
+          <ModalButton onClick={() => handleSubmit()}>Registrar</ModalButton>
         </ModalFooter>
       </Modal>
     </>
-  )
+  );
 }
