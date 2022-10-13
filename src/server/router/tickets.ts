@@ -4,7 +4,7 @@ import { z } from "zod"
 import { paymentTypes } from "../common/payment"
 
 export const ticketsRouter = createRouter()
-  .query("gett-all-tickets", {
+  .query("get-all-tickets", {
     async resolve({ctx}){
       return await ctx.prisma.ticketSell.findMany() 
     }
