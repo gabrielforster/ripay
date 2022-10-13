@@ -1,13 +1,14 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 generator client {
-  provider = "prisma-client-js"
-  previewFeatures = ["referentialIntegrity"]
+    provider        = "prisma-client-js"
+    previewFeatures = ["referentialIntegrity"]
 }
+
 datasource db {
-  provider = "mysql"
-  url = env("DATABASE_URL")
-  referentialIntegrity = "prisma"
+    provider             = "mysql"
+    url                  = env("DATABASE_URL")
+    referentialIntegrity = "prisma"
 }
 
 // Necessary for Next auth
@@ -56,7 +57,7 @@ model VerificationToken {
 }
 
 model VerifiedEmails {
-    id    Int    @default(autoincrement()) @id
+    id    Int    @id @default(autoincrement())
     email String @unique
 }
 
@@ -69,10 +70,10 @@ enum PAYMENT {
 model TicketSell {
     id           String   @id @default(cuid())
     name         String
-    email        String?
     phone        String
-    registered   Boolean
-    payed        Boolean
+    cpf          String
+    registered   Boolean  @default(false)
+    payed        Boolean  @default(false)
     ticketAmount Int
     createdAt    DateTime @default(now())
     payment      PAYMENT
