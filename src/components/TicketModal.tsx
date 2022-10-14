@@ -76,6 +76,9 @@ export default function TicketModal(props: TicketModalProps) {
     setCpf("");
     setPhone("");
     setAmount(0);
+    setPaymentMethod(undefined);
+    setPayed(false);
+    setRegistered(false);
 
     props.closeModal();
   }
@@ -107,7 +110,7 @@ export default function TicketModal(props: TicketModalProps) {
         size={SIZE.default}
         role={ROLE.dialog}
       >
-        <ModalHeader>Registrar nova venda!</ModalHeader>
+        <ModalHeader>Cadastrar nova venda!</ModalHeader>
 
         <ModalBody>
           <FormControl label="Nome do comprador">
