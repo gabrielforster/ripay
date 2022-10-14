@@ -6,10 +6,9 @@ import { PlusCircle } from "phosphor-react";
 
 import Dashboard from "../components/Dashboard";
 import TicketModal from "../components/TicketModal";
+import Link from "next/link";
 
 const Home: NextPage = () => {
-  // const hello = trpc.useQuery(["example.hello", { text: "from tRPC" }]);
-
   const { data: session } = useSession();
 
   const [modelState, setModalState] = useState<boolean>(false);
@@ -24,8 +23,16 @@ const Home: NextPage = () => {
         <Head>
           <title>Ripay</title>
         </Head>
-        <header className="flex justify-between p-2">
-          <h3>Ripay</h3>
+
+        <header className="flex items-center justify-between p-2">
+          <nav className="w-1/4 flex justify-between">
+            <Link href={"/"}>
+              <a className="underline">Rifas</a>
+            </Link>
+            <Link href={"/renda"}>
+              <a>Renda</a>
+            </Link>
+          </nav>
 
           <nav className="flex">
             <div className="flex items-center">
@@ -37,6 +44,7 @@ const Home: NextPage = () => {
             <div className="flex">
               <img
                 src={session.user?.image as string}
+                alt="Foto de perfil"
                 className="mr-2 h-10 w-10 rounded-full"
               />
 
@@ -50,9 +58,7 @@ const Home: NextPage = () => {
           </nav>
         </header>
 
-        <main className="grid place-items-center w-full">
-          <h2>Listagem das Rifas!</h2>
-
+        <main className="grid w-full place-items-center">
           <TicketModal isOpen={modelState} closeModal={handleChangeModal} />
 
           <Dashboard />

@@ -104,7 +104,7 @@ export default function TicketModal(props: TicketModalProps) {
         closeable
         animate
         autoFocus
-        size={SIZE.auto}
+        size={SIZE.default}
         role={ROLE.dialog}
       >
         <ModalHeader>Registrar nova venda!</ModalHeader>

@@ -7,10 +7,10 @@ interface TicketCardProps {
 
 export default function TicketCard({ ticket }: TicketCardProps) {
   return (
-    <>
+    <section className="mt-2">
       <Accordion accordion>
-        <Panel title={`Rifa vendida para ${ticket.name}`}>
-          <section>
+        <Panel title={ticket.name}>
+          <section className="flex flex-col text-sm md:flex-row md:text-base justify-around">
             <p>
               <span className="mr-1 text-gray-300">CPF:</span>
               {ticket.cpf}
@@ -40,9 +40,19 @@ export default function TicketCard({ ticket }: TicketCardProps) {
                 dateStyle: "short",
               }).format(new Date(ticket.createdAt))}
             </p>
+
+            <p>
+              <span className="mr-1 text-gray-300">Pago:</span>
+              {ticket.payed ? "Sim" : "Não"}
+            </p>
+
+            <p>
+              <span className="mr-1 text-gray-300">Registrado:</span>
+              {ticket.registered ? "Sim" : "Não"}
+            </p>
           </section>
         </Panel>
       </Accordion>
-    </>
+    </section>
   );
 }
