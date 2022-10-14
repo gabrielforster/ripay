@@ -20,7 +20,8 @@ export default function Dashboard(){
           <h1 className="text-2xl font-bold">Rifas</h1>
 
           <div className="w-full">
-            {tickets.map((ticket) => (
+            {/* TRASH SORT HERE FIX THAT */}
+            {tickets.sort((a, b) => Number(- (Number(a.createdAt) - Number(b.createdAt)))).map((ticket) => (
               <div key={ticket.id}>
                 <TicketCard ticket={ticket}/>
               </div>
