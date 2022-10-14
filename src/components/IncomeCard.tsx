@@ -6,7 +6,7 @@ interface IncomeCardProps {
 export default function IncomeCard(props: IncomeCardProps) {
   return (
     <>
-      <div className="flex h-32 w-full flex-col items-center justify-center rounded-lg bg-zinc-800 shadow-md mt-2">
+      <div className="flex h-32 w-full md:w-1/3 flex-col items-center justify-center rounded-lg bg-zinc-800 shadow-md mt-2">
         <h1 className="text-2xl font-bold">Quantia com {props.name}</h1>
         <h1 className="text-2xl font-bold">
           {new Intl.NumberFormat("pt-BR", {
