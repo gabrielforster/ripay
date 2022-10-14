@@ -25,7 +25,7 @@ const Home: NextPage = () => {
         </Head>
 
         <header className="flex items-center justify-between p-2">
-          <nav className="w-1/4 flex justify-between">
+          <nav className="w-1/4 md:w-[5%] flex justify-between">
             <Link href={"/"}>
               <a className="underline">Rifas</a>
             </Link>
@@ -34,13 +34,17 @@ const Home: NextPage = () => {
             </Link>
           </nav>
 
-          <nav className="flex">
-            <div className="flex items-center">
-              <button className="mr-2" onClick={() => handleChangeModal()}>
-                <PlusCircle size={32} color="white" />
+          <div className="flex items-center">
+              <button
+                className="mr-2 flex items-center rounded border p-1 bg-zinc-800 border-zinc-700"
+                onClick={() => handleChangeModal()}
+              >
+                <span>Nova venda!</span>
+                <PlusCircle size={24} color="white" />
               </button>
             </div>
 
+          <nav className="flex">
             <div className="flex">
               <img
                 src={session.user?.image as string}

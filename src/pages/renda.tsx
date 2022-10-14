@@ -2,16 +2,21 @@ import { NextPage } from "next";
 import { signIn, signOut, useSession } from "next-auth/react";
 import Head from "next/head";
 import Link from "next/link";
+import { PlusCircle } from "phosphor-react";
+import { useState } from "react";
+
 import IncomeCard from "../components/IncomeCard";
+import { SpentModal } from "../components/SpentModal";
 import { trpc } from "../utils/trpc";
 
 const RendaPage: NextPage = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false)
+
   const { data: session } = useSession();
 
   const { data: tickets } = trpc.useQuery(["tickets.get-all-tickets"]);
 
   const incomeSumary = tickets?.reduce((acc, income) => {
-
     if(income.payment === "MOM") acc.mom += income.ticketAmount * 10;
     if(income.payment === "DAD") acc.dad += income.ticketAmount * 10;
     if(income.payment === "GABRIEL") acc.gabriel += income.ticketAmount * 10;
@@ -23,6 +28,10 @@ const RendaPage: NextPage = () => {
     gabriel: 0
   });
 
+  function handleChangeModal(){
+    setIsModalOpen(!isModalOpen)
+  }
+
   if (session) {
     return (
       <>
@@ -31,7 +40,7 @@ const RendaPage: NextPage = () => {
         </Head>
 
         <header className="flex items-center justify-between p-2">
-          <nav className="w-1/4 flex justify-between">
+          <nav className="w-1/4 md:w-[5%] flex justify-between">
             <Link href={'/'}>
               <a>Rifas</a>
             </Link>
@@ -40,6 +49,16 @@ const RendaPage: NextPage = () => {
               <a className="underline">Renda</a>
             </Link>
           </nav>
+
+          <div className="flex items-center">
+              <button
+                className="mr-2 flex items-center rounded border p-1 bg-zinc-800 border-zinc-700"
+                onClick={() => handleChangeModal()}
+              >
+                <span>Novo gasto!</span>
+                <PlusCircle size={24} color="white" />
+              </button>
+            </div>
 
           <nav className="flex">
             <div className="flex">
@@ -58,6 +77,8 @@ const RendaPage: NextPage = () => {
             </div>
           </nav>
         </header>
+
+        <SpentModal isOpen={isModalOpen} closeModal={handleChangeModal} />
 
         <main className="text-sm md:text-xs w-9/12 flex flex-col flex-grow justify-center items-center mt-4 mx-auto">
           <IncomeCard name="Gabriel" income={incomeSumary?.gabriel as number}/>
