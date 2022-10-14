@@ -8,6 +8,7 @@ generator client {
 datasource db {
     provider             = "mysql"
     url                  = env("DATABASE_URL")
+    shadowDatabaseUrl    = env("SHADOW_DATABASE_URL")
     referentialIntegrity = "prisma"
 }
 
@@ -77,4 +78,12 @@ model TicketSell {
     ticketAmount Int
     createdAt    DateTime @default(now())
     payment      PAYMENT
+}
+
+model Outcome {
+    id          String   @id @default(cuid())
+    description String
+    createdAt   DateTime @default(now())
+    cost        Int
+    payment     PAYMENT
 }
