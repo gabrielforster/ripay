@@ -5,7 +5,7 @@ import Link from "next/link";
 import { PlusCircle } from "phosphor-react";
 import { useState } from "react";
 
-import IncomeCard from "../components/IncomeCard";
+import IncomeCard from "../components/SummaryCard";
 import { SpentModal } from "../components/SpentModal";
 import { trpc } from "../utils/trpc";
 
