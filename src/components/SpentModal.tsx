@@ -12,6 +12,7 @@ import { FormControl } from "baseui/form-control";
 import { Input } from "baseui/input";
 import { Select, Value } from "baseui/select"
 import { useState } from "react";
+import { trpc } from "../utils/trpc";
 
 
 interface SpentModalProps{
@@ -22,9 +23,10 @@ interface SpentModalProps{
 export function SpentModal(props: SpentModalProps) {
 
   const [spentName, setSpentName] = useState<string>("");
-  const [amount, setAmount] = useState<number>();
+  const [cost, setCost] = useState<number>(0);
   const [whoSpent, setWhoSpent] = useState<Value>();
 
+  const createSpent = trpc.useMutation("outcome.create-outcome");
 
   const whoSpentOptions = [
     { label: "Gabriel", id: "gabriel" },
@@ -32,15 +34,25 @@ export function SpentModal(props: SpentModalProps) {
     { label: "Pai", id: "pai" },
   ];
 
+  function getFormatedPayment() {
+    if (whoSpent) {
+      return whoSpent.map((option) => option.id).toString();
+    }
+  }
+
   function handleSubmit(){
-    console.log(spentName, amount, whoSpent)
+    createSpent.mutateAsync({
+      description: spentName,
+      cost,
+      payment: getFormatedPayment() as string,
+    });
 
     handleCloseModal()
   }
 
   function handleCloseModal(){
     setSpentName("");
-    setAmount(undefined);
+    setCost(0);
     setWhoSpent(undefined);
     
     props.closeModal();
@@ -70,8 +82,8 @@ export function SpentModal(props: SpentModalProps) {
 
           <FormControl label="Quantia">
             <Input
-              value={amount}
-              onChange={({ target }) => setAmount(Number(target.value))}
+              value={cost}
+              onChange={({ target }) => setCost(Number(target.value))}
               placeholder="Ex: 150.50"
               type="number"
               startEnhancer="$"
