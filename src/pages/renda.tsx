@@ -92,7 +92,7 @@ const RendaPage: NextPage = () => {
         <SpentModal isOpen={isModalOpen} closeModal={handleChangeModal} />
 
         <main className="mx-auto mt-4 flex w-9/12 flex-grow flex-col items-center justify-center text-sm md:text-xs">
-          <section>
+          <>
             <IncomeCard
               name="Gabriel"
               income={incomeSumary?.gabriel as number}
@@ -110,7 +110,7 @@ const RendaPage: NextPage = () => {
               income={incomeSumary?.dad as number}
               outcome={outcomeSumary?.dad as number}
             />
-          </section>
+          </>
 
           <section className="mt-4 flex w-2/3 flex-col items-center justify-center">
             <h1 className="text-2xl">Saídas</h1>
