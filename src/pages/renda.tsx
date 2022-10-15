@@ -111,6 +111,25 @@ const RendaPage: NextPage = () => {
               outcome={outcomeSumary?.dad as number}
             />
           </section>
+
+          <section className="mt-4 flex w-2/3 flex-col items-center justify-center">
+            <h1 className="text-2xl">Saídas</h1>
+
+            {/* BAD LIST HERE FIX LATTER */}
+            <ul className="flex w-full flex-col items-center justify-center text-sm">
+              {outcomes?.map((outcome) => (
+                <li key={outcome.id} className="flex justify-between">
+                  <span>{outcome.description}</span>
+                  <span className="ml-2">
+                    {new Intl.NumberFormat("pt-BR", {
+                      style: "currency",
+                      currency: "BRL",
+                    }).format(Number(outcome.cost))}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </section>
         </main>
       </>
     );
