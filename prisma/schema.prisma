@@ -84,6 +84,6 @@ model Outcome {
     id          String   @id @default(cuid())
     description String
     createdAt   DateTime @default(now())
-    cost        Int
+    cost        Decimal  @db.Decimal(10, 2)
     payment     PAYMENT
 }
