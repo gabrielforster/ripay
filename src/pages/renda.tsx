@@ -10,32 +10,37 @@ import { SpentModal } from "../components/SpentModal";
 import { trpc } from "../utils/trpc";
 
 const RendaPage: NextPage = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const { data: session } = useSession();
 
   const { data: tickets } = trpc.useQuery(["tickets.get-all-tickets"]);
   const { data: outcomes } = trpc.useQuery(["outcome.get-all-outcomes"]);
 
+  const incomeSumary = tickets?.reduce(
+    (acc, income) => {
+      if (income.payment === "MOM") acc.mom += income.ticketAmount * 10;
+      if (income.payment === "DAD") acc.dad += income.ticketAmount * 10;
+      if (income.payment === "GABRIEL") acc.gabriel += income.ticketAmount * 10;
 
-  const incomeSumary = tickets?.reduce((acc, income) => {
-    if(income.payment === "MOM") acc.mom += income.ticketAmount * 10;
-    if(income.payment === "DAD") acc.dad += income.ticketAmount * 10;
-    if(income.payment === "GABRIEL") acc.gabriel += income.ticketAmount * 10;
+      return acc;
+    },
+    { mom: 0, dad: 0, gabriel: 0 }
+  );
 
-    return acc
-  }, { mom: 0, dad: 0, gabriel: 0 });
+  const outcomeSumary = outcomes?.reduce(
+    (acc, outcome) => {
+      if (outcome.payment === "MOM") acc.mom += Number(outcome.cost);
+      if (outcome.payment === "DAD") acc.dad += Number(outcome.cost);
+      if (outcome.payment === "GABRIEL") acc.gabriel += Number(outcome.cost);
 
-  const outcomeSumary = outcomes?.reduce((acc, outcome) => {
-    if(outcome.payment === "MOM") acc.mom += Number(outcome.cost);
-    if(outcome.payment === "DAD") acc.dad += Number(outcome.cost);
-    if(outcome.payment === "GABRIEL") acc.gabriel += Number(outcome.cost);
+      return acc;
+    },
+    { mom: 0, dad: 0, gabriel: 0 }
+  );
 
-    return acc
-  }, { mom: 0, dad: 0, gabriel: 0 });
-
-  function handleChangeModal(){
-    setIsModalOpen(!isModalOpen)
+  function handleChangeModal() {
+    setIsModalOpen(!isModalOpen);
   }
 
   if (session) {
@@ -46,25 +51,25 @@ const RendaPage: NextPage = () => {
         </Head>
 
         <header className="flex items-center justify-between p-2">
-          <nav className="w-1/4 md:w-[5%] flex justify-between">
-            <Link href={'/'}>
+          <nav className="flex w-1/4 justify-between md:w-[5%]">
+            <Link href={"/"}>
               <a>Rifas</a>
             </Link>
 
-            <Link href={'/renda'}>
+            <Link href={"/renda"}>
               <a className="underline">Renda</a>
             </Link>
           </nav>
 
           <div className="flex items-center">
-              <button
-                className="mr-2 flex items-center rounded border p-1 bg-zinc-800 border-zinc-700"
-                onClick={() => handleChangeModal()}
-              >
-                <span>Novo gasto!</span>
-                <PlusCircle size={24} color="white" />
-              </button>
-            </div>
+            <button
+              className="mr-2 flex items-center rounded border border-zinc-700 bg-zinc-800 p-1"
+              onClick={() => handleChangeModal()}
+            >
+              <span>Novo gasto!</span>
+              <PlusCircle size={24} color="white" />
+            </button>
+          </div>
 
           <nav className="flex">
             <div className="flex">
@@ -86,12 +91,26 @@ const RendaPage: NextPage = () => {
 
         <SpentModal isOpen={isModalOpen} closeModal={handleChangeModal} />
 
-        <main className="text-sm md:text-xs w-9/12 flex flex-col flex-grow justify-center items-center mt-4 mx-auto">
-          <IncomeCard name="Gabriel" income={incomeSumary?.gabriel as number} outcome={outcomeSumary?.gabriel as number} />
+        <main className="mx-auto mt-4 flex w-9/12 flex-grow flex-col items-center justify-center text-sm md:text-xs">
+          <section>
+            <IncomeCard
+              name="Gabriel"
+              income={incomeSumary?.gabriel as number}
+              outcome={outcomeSumary?.gabriel as number}
+            />
 
-          <IncomeCard name="Mãe" income={incomeSumary?.mom as number} outcome={outcomeSumary?.mom as number} />
+            <IncomeCard
+              name="Mãe"
+              income={incomeSumary?.mom as number}
+              outcome={outcomeSumary?.mom as number}
+            />
 
-          <IncomeCard name="Pai" income={incomeSumary?.dad as number} outcome={outcomeSumary?.dad as number} />
+            <IncomeCard
+              name="Pai"
+              income={incomeSumary?.dad as number}
+              outcome={outcomeSumary?.dad as number}
+            />
+          </section>
         </main>
       </>
     );
