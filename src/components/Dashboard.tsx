@@ -4,7 +4,7 @@ import TicketCard from "./TicketCard";
 export default function Dashboard(){
   
   const {data: tickets, isLoading} = trpc.useQuery(["tickets.get-all-tickets"]);
-
+  
   if(isLoading){
     return <div>Carregando rifas...</div>
   }

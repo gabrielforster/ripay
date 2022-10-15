@@ -15,6 +15,8 @@ const RendaPage: NextPage = () => {
   const { data: session } = useSession();
 
   const { data: tickets } = trpc.useQuery(["tickets.get-all-tickets"]);
+  const { data: outcomes } = trpc.useQuery(["outcome.get-all-outcomes"]);
+
 
   const incomeSumary = tickets?.reduce((acc, income) => {
     if(income.payment === "MOM") acc.mom += income.ticketAmount * 10;
@@ -22,11 +24,15 @@ const RendaPage: NextPage = () => {
     if(income.payment === "GABRIEL") acc.gabriel += income.ticketAmount * 10;
 
     return acc
-  }, {
-    mom: 0,
-    dad: 0,
-    gabriel: 0
-  });
+  }, { mom: 0, dad: 0, gabriel: 0 });
+
+  const outcomeSumary = outcomes?.reduce((acc, outcome) => {
+    if(outcome.payment === "MOM") acc.mom += Number(outcome.cost);
+    if(outcome.payment === "DAD") acc.dad += Number(outcome.cost);
+    if(outcome.payment === "GABRIEL") acc.gabriel += Number(outcome.cost);
+
+    return acc
+  }, { mom: 0, dad: 0, gabriel: 0 });
 
   function handleChangeModal(){
     setIsModalOpen(!isModalOpen)
@@ -81,11 +87,11 @@ const RendaPage: NextPage = () => {
         <SpentModal isOpen={isModalOpen} closeModal={handleChangeModal} />
 
         <main className="text-sm md:text-xs w-9/12 flex flex-col flex-grow justify-center items-center mt-4 mx-auto">
-          <IncomeCard name="Gabriel" income={incomeSumary?.gabriel as number}/>
+          <IncomeCard name="Gabriel" income={incomeSumary?.gabriel as number} outcome={outcomeSumary?.gabriel as number} />
 
-          <IncomeCard name="Mãe" income={incomeSumary?.mom as number}/>
+          <IncomeCard name="Mãe" income={incomeSumary?.mom as number} outcome={outcomeSumary?.mom as number} />
 
-          <IncomeCard name="Pai" income={incomeSumary?.dad as number}/>
+          <IncomeCard name="Pai" income={incomeSumary?.dad as number} outcome={outcomeSumary?.dad as number} />
         </main>
       </>
     );
